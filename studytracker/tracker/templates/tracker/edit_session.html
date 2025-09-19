@@ -1,0 +1,47 @@
+{% extends 'tracker/base.html' %}
+
+{% block title %}Edit Study Session - Study Tracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Edit Study Session</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="id_subject" name="subject" value="{{ form.subject.value }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_date_time" class="form-label">Date & Time</label>
+                        <input type="datetime-local" class="form-control" id="id_date_time" name="date_time" value="{{ form.date_time.value|date:'Y-m-d\TH:i' }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_duration" class="form-label">Duration (hours)</label>
+                        <input type="number" class="form-control" id="id_duration" name="duration" step="0.1" min="0.1" value="{{ form.duration.value }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_productivity_rating" class="form-label">Productivity Rating (1-5)</label>
+                        <select class="form-select" id="id_productivity_rating" name="productivity_rating" required>
+                            <option value="" disabled>Select rating</option>
+                            <option value="1" {% if form.productivity_rating.value == 1 %}selected{% endif %}>1 - Poor</option>
+                            <option value="2" {% if form.productivity_rating.value == 2 %}selected{% endif %}>2 - Below Average</option>
+                            <option value="3" {% if form.productivity_rating.value == 3 %}selected{% endif %}>3 - Average</option>
+                            <option value="4" {% if form.productivity_rating.value == 4 %}selected{% endif %}>4 - Good</option>
+                            <option value="5" {% if form.productivity_rating.value == 5 %}selected{% endif %}>5 - Excellent</option>
+                        </select>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Update Session</button>
+                        <a href="{% url 'session_list' %}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

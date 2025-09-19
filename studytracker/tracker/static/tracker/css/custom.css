@@ -1,0 +1,108 @@
+/* Study Tracker Custom Styles */
+
+/* Dashboard cards */
+.dashboard-card {
+    transition: transform 0.3s;
+    height: 100%;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.dashboard-card .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dashboard-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-card .stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.dashboard-card .stat-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+/* Chart containers */
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 300px;
+    width: 100%;
+}
+
+/* Insights section */
+.insight-item {
+    padding: 1rem;
+    border-left: 4px solid #007bff;
+    background-color: #f8f9fa;
+    margin-bottom: 1rem;
+}
+
+.insight-item h5 {
+    color: #007bff;
+    margin-bottom: 0.5rem;
+}
+
+.insight-item p {
+    margin-bottom: 0;
+}
+
+/* Session list table */
+.session-table th {
+    background-color: #f8f9fa;
+}
+
+.session-table .productivity-badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+}
+
+.rating-1 { background-color: #dc3545; }
+.rating-2 { background-color: #fd7e14; }
+.rating-3 { background-color: #ffc107; }
+.rating-4 { background-color: #20c997; }
+.rating-5 { background-color: #198754; }
+
+/* Login and signup forms */
+.auth-form-container {
+    max-width: 450px;
+    margin: 2rem auto;
+}
+
+/* Footer */
+.footer {
+    margin-top: 3rem;
+    padding: 1.5rem 0;
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-card .stat-value {
+        font-size: 2rem;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}

@@ -1,0 +1,196 @@
+{% extends 'tracker/base.html' %}
+
+{% block title %}Dashboard - Study Tracker{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<link rel="stylesheet" href="/static/tracker/css/custom.css">
+<script src="/static/tracker/js/charts.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Study Dashboard</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card dashboard-card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Sessions</h5>
+                    <p class="stat-value">{{ total_sessions }}</p>
+                    <p class="stat-label">Study sessions recorded</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card dashboard-card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Hours</h5>
+                    <p class="stat-value">{{ total_hours|floatformat:1 }}</p>
+                    <p class="stat-label">Hours of studying</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card dashboard-card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Actions</h5>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'add_session' %}" class="btn btn-light">Add Session</a>
+                        <a href="{% url 'session_list' %}" class="btn btn-outline-light">View All</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Study Hours by Subject</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Subject</th>
+                                    <th>Total Hours</th>
+                                    <th>Avg. Productivity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for subject in subject_hours %}
+                                <tr>
+                                    <td>{{ subject.subject }}</td>
+                                    <td>{{ subject.total_hours|floatformat:1 }}</td>
+                                    <td>{{ subject.avg_productivity|floatformat:1 }}/5</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="3">No study sessions recorded yet.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Analytics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="chart-container">
+                                <canvas id="subjectHoursChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="chart-container">
+                                <canvas id="productivityChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="chart-container">
+                                <canvas id="timeDistributionChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            {% if charts.hours_over_time %}
+                            <div>{{ charts.hours_over_time|safe }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if charts.activity_heatmap %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div>{{ charts.activity_heatmap|safe }}</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Insights</h5>
+                </div>
+                <div class="card-body">
+                    {% for insight in insights %}
+                    <div class="insight-item">
+                        <h5>Insight #{{ forloop.counter }}</h5>
+                        <p>{{ insight }}</p>
+                    </div>
+                    {% empty %}
+                    <div class="alert alert-info">
+                        Add more study sessions to get personalized insights!
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Tools</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Export Data</h5>
+                                    <p>Download your study data as a CSV file.</p>
+                                    <a href="{% url 'export_csv' %}" class="btn btn-primary">Export to CSV</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Predict Productivity</h5>
+                                    <p>Predict your productivity for a specific subject and day.</p>
+                                    <a href="{% url 'predict' %}" class="btn btn-primary">Make Prediction</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Prepare chart data for JavaScript
+const chartData = {
+    subjectHours: {
+        subjects: [{% for subject in subject_hours %}"{{ subject.subject }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
+        hours: [{% for subject in subject_hours %}{{ subject.total_hours|floatformat:1 }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+    },
+    productivity: {
+        dates: [{% for session in sessions|slice:":10" %}"{{ session.date_time|date:'Y-m-d' }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
+        ratings: [{% for session in sessions|slice:":10" %}{{ session.productivity_rating }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+    },
+    timeDistribution: {
+        subjects: [{% for subject in subject_hours %}"{{ subject.subject }}"{% if not forloop.last %}, {% endif %}{% endfor %}],
+        percentages: [{% for subject in subject_hours %}{{ subject.total_hours|floatformat:1 }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+    }
+};
+</script>
+{% endblock %}

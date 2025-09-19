@@ -1,0 +1,52 @@
+{% extends 'tracker/base.html' %}
+
+{% block title %}My Sessions - Study Tracker{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1>My Study Sessions</h1>
+        <a href="{% url 'add_session' %}" class="btn btn-primary">Add New Session</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Date & Time</th>
+                                <th>Duration (hours)</th>
+                                <th>Productivity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for session in sessions %}
+                            <tr>
+                                <td>{{ session.subject }}</td>
+                                <td>{{ session.date_time }}</td>
+                                <td>{{ session.duration|floatformat:1 }}</td>
+                                <td>{{ session.productivity_rating }}/5</td>
+                                <td>
+                                    <a href="{% url 'edit_session' session.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                    <a href="{% url 'delete_session' session.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">No study sessions recorded yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

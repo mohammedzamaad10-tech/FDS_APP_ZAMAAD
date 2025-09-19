@@ -1,0 +1,30 @@
+{% extends 'tracker/base.html' %}
+
+{% block title %}Delete Study Session - Study Tracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Delete Study Session</h4>
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to delete this study session?</p>
+                <p><strong>Subject:</strong> {{ session.subject }}</p>
+                <p><strong>Date & Time:</strong> {{ session.date_time }}</p>
+                <p><strong>Duration:</strong> {{ session.duration|floatformat:1 }} hours</p>
+                <p><strong>Productivity Rating:</strong> {{ session.productivity_rating }}/5</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <a href="{% url 'session_list' %}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
